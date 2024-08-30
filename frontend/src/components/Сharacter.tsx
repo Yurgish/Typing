@@ -12,7 +12,7 @@ const Character = ({ char, typedChar, isCurrent }: CharacterProps) => {
     const isSpace = char === " ";
     const getCharacterClassName = useCallback(() => {
         if (isSpace) {
-            return;
+            return "";
         }
         if (typedChar) {
             return typedChar === char ? "text-green-500" : "text-red-500";

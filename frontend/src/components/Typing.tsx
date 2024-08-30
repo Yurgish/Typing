@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useTyping from "@/hooks/useTyping";
-import Character from "@/components/Сharacter";
+import Word from "@/components/Word";
 
 interface TypingProps {
     text: string;
@@ -32,30 +32,15 @@ const Typing = ({ text, onComplete }: TypingProps) => {
                 const isCurrentWord = wordIndex === currentWordIndex;
 
                 return (
-                    <div key={wordIndex} className="word">
-                        {word.split("").map((char, charIndex) => {
-                            const typedChar = typedWord[charIndex];
-                            const isCurrent = isCurrentWord && charIndex === typedWord.length;
-
-                            return (
-                                <Character
-                                    key={`${char}-${wordIndex}-${charIndex}`}
-                                    char={char}
-                                    typedChar={typedChar}
-                                    isCurrent={isCurrent}
-                                />
-                            );
-                        })}
-                        {/* Додавання пробілу після кожного слова, крім останнього */}
-                        {wordIndex < words.length - 1 && (
-                            <Character
-                                key={`space-${wordIndex}`}
-                                char=" "
-                                typedChar={typedWord[typedWord.length]}
-                                isCurrent={isCurrentWord && typedWord.length === word.length}
-                            />
-                        )}
-                    </div>
+                    <Word
+                        key={wordIndex}
+                        word={word}
+                        typedWord={typedWord}
+                        isCurrentWord={isCurrentWord}
+                        wordIndex={wordIndex}
+                        currentWordIndex={currentWordIndex}
+                        wordsLength={words.length}
+                    />
                 );
             })}
         </div>
