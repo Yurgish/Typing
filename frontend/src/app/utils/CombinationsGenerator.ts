@@ -1,3 +1,5 @@
+"use client";
+
 export class CombinationsGenerator {
     private sets: { chars: string[]; length: number }[];
 

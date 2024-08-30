@@ -1,17 +1,23 @@
 "use client";
 
-import React from "react";
-import lessonConfig from "@/data/lessons";
+import React, { useEffect, useState } from "react";
+import lessonConfig, { Lesson } from "@/data/lessons";
 import TypingTest from "@/components/TypingTest";
 
 const LessonPage = ({ params }: { params: { lessonId: string } }) => {
-    const { lessonId } = params;
+    const [testsStrings, setTestsString] = useState<Lesson>();
+    useEffect(() => {
+        const { lessonId } = params;
+        setTestsString(lessonConfig[lessonId]);
+    }, [params]);
 
     return (
-        <div>
-            <h1>{lessonConfig[lessonId].name}</h1>
-            <TypingTest testTexts={lessonConfig[lessonId].lines} />
-        </div>
+        testsStrings && (
+            <div>
+                <h1>{testsStrings.name}</h1>
+                <TypingTest testTexts={testsStrings.lines} />
+            </div>
+        )
     );
 };
 

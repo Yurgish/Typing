@@ -2,7 +2,7 @@
 
 import { CombinationsGenerator } from "@/app/utils/CombinationsGenerator";
 
-interface Lesson {
+export interface Lesson {
     name: string;
     lines: string[];
 }
@@ -47,18 +47,18 @@ const lessons: Lessons = {
     "3": {
         name: "Lesson 3: S and L Keys",
         lines: [
-            "ss ss ss ss ss ss",
-            "ll ll ll ll ll ll",
-            "ss ll ss ll ss ll",
-            "ls ls ls ls ls ls",
-            "sl sl sl sl sl sl",
-            "sss ssl sls sll lss lsl lls lll",
-            "ssss sssl ssls ssll slsl slss slls slll lsss lssl lsls lsll llss llsl llls llll",
+            // "ss ss ss ss ss ss",
+            // "ll ll ll ll ll ll",
+            // "ss ll ss ll ss ll",
+            // "ls ls ls ls ls ls",
+            // "sl sl sl sl sl sl",
+            // "sss ssl sls sll lss lsl lls lll",
+            // "ssss sssl ssls ssll slsl slss slls slll lsss lssl lsls lsll llss llsl llls llll",
             new CombinationsGenerator([
                 { chars: ["s", "l"], length: 3 },
                 { chars: ["s", "l"], length: 4 },
-                // { chars: ["s", "l"], length: 5 },
-                // { chars: ["s", "l"], length: 6 },
+                { chars: ["s", "l"], length: 5 },
+                { chars: ["s", "l"], length: 6 },
             ]).getShuffledCombinationsAsString(),
         ],
     },

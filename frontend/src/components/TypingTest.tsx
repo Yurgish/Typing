@@ -40,7 +40,9 @@ const TypingTest = ({ testTexts }: TypingTestProps) => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4">
             {!isFinished ? (
-                <Typing key={currentTestIndex} text={testTexts[currentTestIndex]} onComplete={handleEndOfTest} />
+                <>
+                    <Typing key={currentTestIndex} text={testTexts[currentTestIndex]} onComplete={handleEndOfTest} />
+                </>
             ) : (
                 <div className="text-center">
                     <h2>Lesson Completed!</h2>

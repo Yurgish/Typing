@@ -11,8 +11,10 @@ interface WordProps {
 }
 
 const Word = ({ word, typedWord, isCurrentWord, wordIndex, wordsLength }: WordProps) => {
+    const isWordWrong = !word.startsWith(typedWord);
+
     return (
-        <div className="word">
+        <div className={`word`}>
             {word.split("").map((char, charIndex) => {
                 const typedChar = typedWord[charIndex];
                 const isCurrent = isCurrentWord && charIndex === typedWord.length;
@@ -23,6 +25,7 @@ const Word = ({ word, typedWord, isCurrentWord, wordIndex, wordsLength }: WordPr
                         char={char}
                         typedChar={typedChar}
                         isCurrent={isCurrent}
+                        className={`${isWordWrong ? "border-b-2 border-red-400" : ""}`}
                     />
                 );
             })}
