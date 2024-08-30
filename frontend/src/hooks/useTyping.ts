@@ -1,15 +1,41 @@
-"use client";
+import { useCallback, useEffect, useState, useRef } from "react";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+const enableSpaceSkipping = true;
 
 export const isKeyboardCodeAllowed = (code: string) => {
-    return code.startsWith("Key") || code.startsWith("Digit") || code === "Backspace" || code === "Space";
+    return (
+        code.startsWith("Key") ||
+        code.startsWith("Digit") ||
+        code === "Backspace" ||
+        code === "Space" ||
+        code === "Comma" ||
+        code === "Period" ||
+        code === "Minus" ||
+        code === "Semicolon" ||
+        code === "Quote" ||
+        code === "BracketLeft" ||
+        code === "BracketRight"
+    );
 };
 
-const useTyping = (enabled: boolean) => {
-    const [cursor, setCursor] = useState(0);
+const useTyping = (text: string, enabled: boolean) => {
     const [typed, setTyped] = useState<string>("");
-    const totalTyped = useRef(0);
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const [startTime, setStartTime] = useState<number | null>(null);
+    const endTime = useRef<number | null>(null);
+
+    const [isEndOfString, setIsEndOfString] = useState(false);
+
+    const words = text.split(" ");
+    const currentWord = words[currentWordIndex] || "";
+    const typedWords = typed.split(" ");
+    const currentTypedWord = typedWords[currentWordIndex] || "";
+
+    const checkIsEndOfString = useCallback(() => {
+        if (currentWordIndex === words.length - 1 && currentTypedWord.length === currentWord.length) {
+            setIsEndOfString(true);
+        }
+    }, [currentWordIndex, currentTypedWord, currentWord, words.length]);
 
     const keydownHandler = useCallback(
         ({ key, code }: KeyboardEvent) => {
@@ -17,45 +43,72 @@ const useTyping = (enabled: boolean) => {
                 return;
             }
 
-            switch (key) {
-                case "Backspace":
-                    setTyped((prev) => prev.slice(0, -1));
-                    setCursor((cursor) => (cursor !== 0 ? cursor - 1 : cursor));
-                    totalTyped.current -= 1;
-                    break;
-                default:
-                    setTyped((prev) => prev.concat(key));
-                    setCursor((cursor) => cursor + 1);
-                    totalTyped.current += 1;
+            if (startTime === null) {
+                setStartTime(Date.now());
+            }
+
+            if (key === "Backspace") {
+                setTyped((prev) => prev.slice(0, -1));
+                if (currentTypedWord.length === 0 && currentWordIndex > 0) {
+                    setCurrentWordIndex(currentWordIndex - 1);
+                }
+            } else if (key === " ") {
+                if (enableSpaceSkipping) {
+                    setTyped((prev) => prev + key);
+                    if (currentWordIndex === words.length - 1) {
+                        setIsEndOfString(true);
+                    } else {
+                        setCurrentWordIndex(currentWordIndex + 1);
+                    }
+                } else if (currentTypedWord === currentWord) {
+                    setTyped((prev) => prev + key);
+                    setCurrentWordIndex(currentWordIndex + 1);
+                }
+            } else if (currentTypedWord.length < currentWord.length) {
+                setTyped((prev) => prev + key);
             }
         },
-        [enabled]
+        [enabled, startTime, currentTypedWord, currentWord, currentWordIndex, words.length]
     );
+
+    useEffect(() => {
+        checkIsEndOfString();
+    }, [checkIsEndOfString, currentWordIndex]);
 
     const clearTyped = useCallback(() => {
         setTyped("");
-        setCursor(0);
+        setCurrentWordIndex(0);
+        setStartTime(null);
+        endTime.current = null;
+        setIsEndOfString(false);
     }, []);
 
-    const resetTotalTyped = useCallback(() => {
-        totalTyped.current = 0;
-    }, []);
+    const calculateTimeElapsed = useCallback(() => {
+        if (startTime === null || endTime.current === null) {
+            return 0;
+        }
+        return (endTime.current - startTime) / 1000 / 60;
+    }, [startTime]);
 
-    // attach the keydown event listener to record keystrokes
     useEffect(() => {
         window.addEventListener("keydown", keydownHandler);
-        // Remove event listeners on cleanup
         return () => {
             window.removeEventListener("keydown", keydownHandler);
         };
     }, [keydownHandler]);
 
+    const setEndTime = () => {
+        endTime.current = Date.now();
+    };
+
     return {
         typed,
-        cursor,
+        currentWordIndex,
+        words,
+        isEndOfString,
         clearTyped,
-        resetTotalTyped,
-        totalTyped: totalTyped.current,
+        calculateTimeElapsed,
+        setEndTime,
     };
 };
 

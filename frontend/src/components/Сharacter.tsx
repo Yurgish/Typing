@@ -1,29 +1,30 @@
+import Caret from "@/components/Caret";
 import React, { useCallback } from "react";
 
 interface CharacterProps {
     char: string;
     typedChar: string;
-    index: number;
-    isCursor: boolean;
+
+    isCurrent: boolean;
 }
 
-const Character = ({ char, typedChar, index, isCursor }: CharacterProps) => {
+const Character = ({ char, typedChar, isCurrent }: CharacterProps) => {
+    const isSpace = char === " ";
     const getCharacterClassName = useCallback(() => {
-        if (index < typedChar.length) {
-            if (char === " " && typedChar[index] !== " ") {
-                return "bg-red-500"; // Highlight spaces as red if incorrect
-            } else if (typedChar[index] === char) {
-                return "text-green-500"; // Correct character
-            } else {
-                return "text-red-500"; // Incorrect character
-            }
+        if (isSpace) {
+            return;
         }
-    }, [char, index, typedChar]);
+        if (typedChar) {
+            return typedChar === char ? "text-green-500" : "text-red-500";
+        } else {
+            return "text-gray-500";
+        }
+    }, [char, isSpace, typedChar]);
 
     return (
-        <span className={`relative ${getCharacterClassName()}`}>
-            {char}
-            {isCursor && <span className="absolute bottom-0 left-0 h-6 border-r-2 border-blue-500" />}
+        <span className="relative ">
+            <span className={` ${getCharacterClassName()}`}>{isSpace ? "\u00A0" : char}</span>
+            {isCurrent && <Caret />}
         </span>
     );
 };
