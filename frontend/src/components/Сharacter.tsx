@@ -17,7 +17,7 @@ const Character = ({ char, typedChar, isCurrent, className = "" }: CharacterProp
             return "";
         }
         if (typedChar) {
-            return typedChar === char ? "text-green-400" : "text-red-400";
+            return typedChar === char ? "text-success-500" : "text-danger-500";
         } else {
             return "text-gray-400";
         }

@@ -36,7 +36,7 @@ const Keyboard = ({ nextKey }: KeyboardProps) => {
     const getKeyClassName = useCallback(
         (key: string) => {
             const isActive = key.toUpperCase() === getKeyId(nextKey || "").toUpperCase();
-            return isActive ? "bg-blue-500 text-white" : "bg-white text-black";
+            return isActive ? "bg-primary-300 text-white" : "bg-default-100";
         },
         [nextKey]
     );
@@ -46,7 +46,7 @@ const Keyboard = ({ nextKey }: KeyboardProps) => {
     };
 
     return (
-        <div className="p-3 text-base bg-gray-200 flex rounded-lg flex-col items-center gap-1">
+        <div className="p-3 text-base bg-default-200 flex rounded-lg flex-col items-center gap-1">
             {keys.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex gap-1">
                     {row.map((key, keyIndex) => (

@@ -25,7 +25,7 @@ const Word = ({ word, typedWord, isCurrentWord, wordIndex, wordsLength }: WordPr
                         char={char}
                         typedChar={typedChar}
                         isCurrent={isCurrent}
-                        className={`${isWordWrong ? "border-b-2 border-red-400" : ""}`}
+                        className={`${isWordWrong ? "border-b-2 border-danger-500" : ""}`}
                     />
                 );
             })}

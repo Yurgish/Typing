@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -16,7 +18,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <NextUIProvider>{children}</NextUIProvider>
+                <NextUIProvider>
+                    <NextThemesProvider attribute="class" defaultTheme="dark">
+                        <ThemeSwitcher />
+                        {children}
+                    </NextThemesProvider>
+                </NextUIProvider>
             </body>
         </html>
     );

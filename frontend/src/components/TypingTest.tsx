@@ -3,7 +3,7 @@
 import Typing from "@/components/Typing";
 import React, { useCallback, useEffect, useState } from "react";
 import useTypingMetrics from "@/hooks/useTypingMetrics";
-import { Progress } from "@nextui-org/progress";
+import { Progress } from "@nextui-org/react";
 
 interface TypingTestProps {
     testTexts: string[];
