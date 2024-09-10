@@ -19,25 +19,46 @@ const useTypingMetrics = () => {
 
     const calculateCurrentMetrics = useCallback(
         ({ elapsedTime, typedText, correctText }: TypingInputValues): TypingMetrics => {
-            if (elapsedTime === null)
+            if (elapsedTime === null) {
                 return {
                     grossWPM: 0,
                     netWPM: 0,
                     accuracy: 0,
                     cpm: 0,
                 };
+            }
+
+            const typedWords = typedText.trim().split(/\s+/);
+            const correctWords = correctText.trim().split(/\s+/);
 
             const typedTextLength = typedText.length;
             const correctTextLength = correctText.length;
             const wordCount = typedTextLength / 5;
             const grossWPM = wordCount / elapsedTime;
 
-            const totalErrors = Array.from(typedText).reduce((errors, char, i) => {
-                return char !== correctText[i] ? errors + 1 : errors;
-            }, 0);
+            let totalErrors = 0;
+
+            for (let i = 0; i < correctWords.length; i++) {
+                const typedWord = typedWords[i] || "";
+                const correctWord = correctWords[i];
+
+                for (let j = 0; j < correctWord.length; j++) {
+                    if (typedWord[j] !== correctWord[j]) {
+                        totalErrors += 1;
+                    }
+                }
+            }
+
+            console.log(
+                totalErrors,
+                typedTextLength,
+                correctTextLength,
+                { typedWords, correctWords },
+                { typedText, correctText }
+            );
 
             const netWPM = grossWPM - totalErrors / elapsedTime;
-            const accuracy = ((typedTextLength - totalErrors) / correctTextLength) * 100;
+            const accuracy = ((correctTextLength - totalErrors) / correctTextLength) * 100;
             const cpm = typedTextLength / elapsedTime;
 
             return {

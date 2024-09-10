@@ -49,22 +49,33 @@ const useTyping = (text: string, enabled: boolean) => {
 
             if (key === "Backspace") {
                 setTyped((prev) => prev.slice(0, -1));
+
                 if (currentTypedWord.length === 0 && currentWordIndex > 0) {
                     setCurrentWordIndex(currentWordIndex - 1);
                 }
-            } else if (key === " ") {
+
+                return;
+            }
+            if (key === " ") {
                 if (enableSpaceSkipping) {
                     setTyped((prev) => prev + key);
+
                     if (currentWordIndex === words.length - 1) {
                         setIsEndOfString(true);
-                    } else {
-                        setCurrentWordIndex(currentWordIndex + 1);
+                        return;
                     }
-                } else if (currentTypedWord === currentWord) {
+
+                    setCurrentWordIndex(currentWordIndex + 1);
+                    return;
+                }
+                if (currentTypedWord === currentWord) {
                     setTyped((prev) => prev + key);
                     setCurrentWordIndex(currentWordIndex + 1);
                 }
-            } else if (currentTypedWord.length < currentWord.length) {
+                return;
+            }
+
+            if (currentTypedWord.length < currentWord.length) {
                 setTyped((prev) => prev + key);
             }
         },
@@ -87,6 +98,11 @@ const useTyping = (text: string, enabled: boolean) => {
         if (startTime === null || endTime.current === null) {
             return 0;
         }
+        console.log(
+            endTime.current - startTime,
+            (endTime.current - startTime) / 1000,
+            (endTime.current - startTime) / 1000 / 60
+        );
         return (endTime.current - startTime) / 1000 / 60;
     }, [startTime]);
 

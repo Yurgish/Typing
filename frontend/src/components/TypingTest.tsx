@@ -3,6 +3,7 @@
 import Typing from "@/components/Typing";
 import React, { useCallback, useEffect, useState } from "react";
 import useTypingMetrics from "@/hooks/useTypingMetrics";
+import { Progress } from "@nextui-org/progress";
 
 interface TypingTestProps {
     testTexts: string[];
@@ -25,6 +26,7 @@ const TypingTest = ({ testTexts }: TypingTestProps) => {
             if (currentTestIndex < testTexts.length - 1) {
                 setCurrentTestIndex((prev) => prev + 1);
             } else {
+                setCurrentTestIndex((prev) => prev + 1);
                 setIsFinished(true);
             }
         },
@@ -48,6 +50,12 @@ const TypingTest = ({ testTexts }: TypingTestProps) => {
                     <h2>Lesson Completed!</h2>
                 </div>
             )}
+            <Progress
+                size="sm"
+                aria-label="Tests Progres"
+                value={(currentTestIndex / testTexts.length) * 100}
+                className="mt-14"
+            />
         </div>
     );
 };
