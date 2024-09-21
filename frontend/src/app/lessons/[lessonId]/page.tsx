@@ -11,14 +11,7 @@ const LessonPage = ({ params }: { params: { lessonId: string } }) => {
         setTestsString(lessonConfig[lessonId]);
     }, [params]);
 
-    return (
-        testsStrings && (
-            <div>
-                <h1>{testsStrings.name}</h1>
-                <TypingTest testTexts={testsStrings.lines} />
-            </div>
-        )
-    );
+    return testsStrings && <TypingTest testTexts={testsStrings.lines} />;
 };
 
 export default LessonPage;

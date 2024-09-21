@@ -40,7 +40,7 @@ const TypingTest = ({ testTexts }: TypingTestProps) => {
     }, [getAverageMetrics, inputData, isFinished, metricsResults]);
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="flex-1 flex flex-col items-center justify-center p-4">
             {!isFinished ? (
                 <>
                     <Typing key={currentTestIndex} text={testTexts[currentTestIndex]} onComplete={handleEndOfTest} />

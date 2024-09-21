@@ -3,7 +3,7 @@ import "./globals.css";
 
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -20,8 +20,10 @@ export default function RootLayout({
             <body>
                 <NextUIProvider>
                     <NextThemesProvider attribute="class" defaultTheme="dark">
-                        <ThemeSwitcher />
-                        {children}
+                        <section className="min-h-screen flex flex-col">
+                            <Header />
+                            {children}
+                        </section>
                     </NextThemesProvider>
                 </NextUIProvider>
             </body>
